@@ -4,10 +4,9 @@ Template elaborado para iniciar projetos de front-end baseados em Vue3 + Vuex + 
 
 ## Repositório
 
-
 ## IDE recomendada
 
-[VSCode](https://code.visualstudio.com/) 
+[VSCode](https://code.visualstudio.com/)
 
 ## Para mais configurações do Vite
 

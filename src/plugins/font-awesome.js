@@ -28,6 +28,9 @@ import {
 	faFolderOpen,
 	faFolderClosed,
 	faHouse,
+	faCameraRetro,
+	faComment,
+	faEnvelope,
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(
@@ -47,6 +50,9 @@ library.add(
 	faFolderOpen,
 	faFolderClosed,
 	faHouse,
+	faCameraRetro,
+	faEnvelope,
+	faComment,
 )
 
 export { FontAwesomeIcon }

@@ -7,15 +7,15 @@ criado em: 12/01/2024
 */
 
 import { createWebHistory, createRouter } from 'vue-router'
-import HomeView from '../components/Home.vue'
-import UsersView from '../components/Users.vue'
-import ProfileView from '../components/Profile.vue'
-import LoginView from '../components/Login.vue'
-import RegisterView from '../components/Register.vue'
-import BoardUserView from '../components/BoardUser.vue'
-import BoardModeratorView from '../components/BoardModerator.vue'
-import BoardAdminView from '../components/BoardAdmin.vue'
-import BoardSuperAdminView from '../components/BoardSuperAdmin.vue'
+import HomeView from '../views/HomeView.vue'
+import UsersView from '../views/UsersView.vue'
+import ProfileView from '../views/ProfileView.vue'
+import LoginView from '../views/LoginView.vue'
+import RegisterView from '../views/RegisterView.vue'
+import BoardUserView from '../views/BoardUserView.vue'
+import BoardModeratorView from '../views/BoardModeratorView.vue'
+import BoardAdminView from '../views/BoardAdminView.vue'
+import BoardSuperAdminView from '../views/BoardSuperAdminView.vue'
 
 const router = createRouter({
 	history: createWebHistory(),
@@ -70,7 +70,7 @@ const router = createRouter({
 
 // check Authorized status everytime a navigating action is trigger
 router.beforeEach((to, from, next) => {
-	const publicPages = ['/login', '/register', '/users']
+	const publicPages = ['/login', '/register', '/']
 	const authRequired = !publicPages.includes(to.path)
 	const token = JSON.parse(localStorage.getItem('token'))
 

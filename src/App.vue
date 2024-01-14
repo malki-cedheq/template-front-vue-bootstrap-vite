@@ -89,6 +89,38 @@ modificado em: 12/01/2024
 		<div class="container">
 			<router-view />
 		</div>
+
+		<div class="container footer">
+			<footer
+				class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top"
+			>
+				<div class="col-md-4 d-flex align-items-center">
+					<span class="mb-3 mb-md-0 text-muted"
+						>All rights reserved © 2024
+						<a href="https://github.com/malki-cedheq">
+							malki-cedheq
+						</a></span
+					>
+				</div>
+				<ul class="nav col-md-3 justify-content-end list-unstyled d-flex">
+					<li class="ms-3">
+						<a class="text-muted" href="#"
+							><font-awesome-icon icon="camera-retro"
+						/></a>
+					</li>
+					<li class="ms-3">
+						<a class="text-muted" href="#"
+							><font-awesome-icon icon="envelope"
+						/></a>
+					</li>
+					<li class="ms-3">
+						<a class="text-muted" href="#"
+							><font-awesome-icon icon="comment"
+						/></a>
+					</li>
+				</ul>
+			</footer>
+		</div>
 	</div>
 </template>
 
@@ -164,3 +196,13 @@ export default {
 	},
 }
 </script>
+<style>
+.footer {
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	width: 100%;
+	text-align: center;
+}
+</style>

@@ -186,7 +186,7 @@ export default {
 					this.successful = true
 					setTimeout(() => {
 						this.$router.push('/login')
-					}, 2000)
+					}, 1000)
 					return response.data
 				})
 				.catch((error) => {

@@ -11,6 +11,7 @@ export default function authHeader() {
 	const token = JSON.parse(localStorage.getItem('token'))
 
 	if (token && token.access_token) {
+		//console.log('Authorization: ' + token.token_type + ' ' + token.access_token)
 		return { Authorization: token.token_type + ' ' + token.access_token }
 	} else {
 		return {}

@@ -14,12 +14,12 @@ modificado em: 12/01/2024
 			<table class="table table-bordered table-hover">
 				<thead class="table-light">
 					<tr>
-						<th scope="col">ID</th>
-						<th scope="col">Username</th>
-						<th scope="col">Email</th>
-						<th scope="col">Role</th>
+						<th scope="col">id</th>
+						<th scope="col">username</th>
+						<th scope="col">email</th>
+						<th scope="col">role</th>
 						<th scope="col">is_active?</th>
-						<th scope="col">Items</th>
+						<th scope="col">items</th>
 					</tr>
 				</thead>
 				<tbody>
