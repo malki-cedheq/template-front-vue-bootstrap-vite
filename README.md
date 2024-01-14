@@ -4,6 +4,8 @@ Template elaborado para iniciar projetos de front-end baseados em Vue3 + Vuex + 
 
 ## Repositório
 
+> https://github.com/malki-cedheq/template-front-vue-bootstrap-vite
+
 ## IDE recomendada
 
 [VSCode](https://code.visualstudio.com/)
