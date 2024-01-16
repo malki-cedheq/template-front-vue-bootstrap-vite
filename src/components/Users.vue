@@ -56,13 +56,11 @@ export default {
 	methods: {
 		getUsers() {
 			UserService.getPublicContent()
-				.then(
-					(response) => {
-						this.all_users = response.data
-						this.successful = true
-						this.message = 'Dados de usuários carregados com sucesso.'
-					},
-				)
+				.then((response) => {
+					this.all_users = response.data
+					this.successful = true
+					this.message = 'Dados de usuários carregados com sucesso.'
+				})
 				.catch((error) => {
 					this.content =
 						(error.response &&

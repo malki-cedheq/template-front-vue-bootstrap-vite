@@ -89,7 +89,8 @@ export default {
     data() {
         const schema = yup.object().shape({
             username: yup
-                .string().matches(usernameRegex, "Username inválido.")
+                .string()
+                .matches(usernameRegex, 'Username inválido.')
                 .required('Necessário fornecer um Username!')
                 .min(3, 'Não deve ter ao menos de 6 caracteres!')
                 .max(20, 'Não deve ultrapassar 16 caracteres!'),
@@ -120,7 +121,7 @@ export default {
     computed: {
         loggedIn() {
             return this.$store.state.auth.status.loggedIn
-        }
+        },
     },
     methods: {
         handleRegister(user) {
@@ -154,7 +155,7 @@ export default {
         if (!this.loggedIn) {
             this.$router.push('/login')
         }
-    }
+    },
 }
 </script>
 

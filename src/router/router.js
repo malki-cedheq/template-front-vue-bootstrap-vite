@@ -65,12 +65,12 @@ const router = createRouter({
 			path: '/users/read',
 			name: 'user-view',
 			component: UserView,
-		},	
+		},
 		{
 			path: '/user/create',
 			name: 'user-create',
 			component: UserCreateView,
-		},			
+		},
 	],
 })
 

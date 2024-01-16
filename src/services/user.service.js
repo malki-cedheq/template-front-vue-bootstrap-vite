@@ -44,11 +44,11 @@ class UserService {
 	}
 
 	update(id, data) {
-		return http.put(`/user/${id}`, data)
+		return http.put(`/user/${id}`, data, { headers: authHeader() })
 	}
 
 	delete(id) {
-		return http.delete(`/user/${id}`)
+		return http.delete(`/user/${id}`, { headers: authHeader() })
 	}
 }
 

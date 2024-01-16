@@ -13,35 +13,59 @@ modificado em: 12/01/2024
 				<h2 class="card-title">Login</h2>
 
 				<div class="imgcontainer">
-					<img id="profile-img" src="https://www.w3schools.com/howto/img_avatar2.png" class="avatar" />
+					<img
+						id="profile-img"
+						src="https://www.w3schools.com/howto/img_avatar2.png"
+						class="avatar"
+					/>
 				</div>
 				<Form @submit="handleLogin" :validation-schema="schema">
 					<div class="form-group px-5">
 						<label for="email">Email</label>
-						<Field name="email" type="email" v-model="user.email" class="form-control"
-							v-tooltip="'Informe o email (eg.abc@dominio.com)'" />
+						<Field
+							name="email"
+							type="email"
+							v-model="user.email"
+							class="form-control"
+							v-tooltip="'Informe o email (eg.abc@dominio.com)'"
+						/>
 						<span class="error-feedback-span">
 							<ErrorMessage name="email" class="error-feedback" />
 						</span>
 					</div>
 					<div class="form-group px-5">
 						<label for="password">Password</label>
-						<Field name="password" type="password" v-model="user.password" class="form-control"
-							v-tooltip="'Informe a senha do usuário informado.'" />
+						<Field
+							name="password"
+							type="password"
+							v-model="user.password"
+							class="form-control"
+							v-tooltip="'Informe a senha do usuário informado.'"
+						/>
 						<span class="error-feedback-span">
 							<ErrorMessage name="password" class="error-feedback" />
 						</span>
 					</div>
 
 					<div class="form-group px-5 py-5">
-						<button class="btn btn-primary btn-block pxy-10" :disabled="loading">
-							<span v-show="loading" class="spinner-border spinner-border-sm"></span>
+						<button
+							class="btn btn-primary btn-block pxy-10"
+							:disabled="loading"
+						>
+							<span
+								v-show="loading"
+								class="spinner-border spinner-border-sm"
+							></span>
 							<span>Login</span>
 						</button>
 					</div>
 
 					<div class="form-group">
-						<div v-if="message" class="alert" :class="successful ? 'alert-success' : 'alert-danger'">
+						<div
+							v-if="message"
+							class="alert"
+							:class="successful ? 'alert-success' : 'alert-danger'"
+						>
 							{{ message }}
 						</div>
 					</div>
