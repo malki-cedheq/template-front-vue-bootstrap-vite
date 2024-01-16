@@ -12,39 +12,22 @@ modificado em: 12/01/2024
 			<div class="card-body">
 				<h2 class="card-title">Register</h2>
 				<div class="imgcontainer">
-					<img
-						id="profile-img"
-						src="https://www.w3schools.com/howto/img_avatar2.png"
-						class="avatar"
-					/>
+					<img id="profile-img" src="https://www.w3schools.com/howto/img_avatar2.png" class="avatar" />
 				</div>
 				<Form @submit="handleRegister" :validation-schema="schema">
 					<div v-if="!successful">
 						<div class="form-group px-5">
 							<label for="username">Username</label>
-							<Field
-								name="username"
-								type="text"
-								class="form-control"
-								rules="name"
-								v-tooltip="
-									'Informe o nome do usuário, não deve conter números.'
-								"
-							/>
+							<Field name="username" type="text" class="form-control" rules="name" v-tooltip="'Informe o nome do usuário, não deve conter números.'
+								" />
 							<span class="error-feedback-span">
 								<ErrorMessage name="username" class="error-feedback" />
 							</span>
 						</div>
 						<div class="form-group px-5">
 							<label for="role">Role</label>
-							<Field
-								name="role"
-								as="select"
-								class="form-control"
-								v-tooltip="
-									'Informe o nível de privilégio de acesso para o usuário.'
-								"
-							>
+							<Field name="role" as="select" class="form-control" v-tooltip="'Informe o nível de privilégio de acesso para o usuário.'
+								">
 								<option value="">Escolha um...</option>
 								<option value="USER">Usuário</option>
 								<option value="MODERATOR">Moderador</option>
@@ -56,12 +39,8 @@ modificado em: 12/01/2024
 						</div>
 						<div class="form-group px-5">
 							<label for="email">Email</label>
-							<Field
-								name="email"
-								type="email"
-								class="form-control"
-								v-tooltip="'Informe o email (eg.abc@dominio.com)'"
-							/>
+							<Field name="email" type="email" class="form-control"
+								v-tooltip="'Informe o email (eg.abc@dominio.com)'" />
 
 							<span class="error-feedback-span">
 								<ErrorMessage name="email" class="error-feedback" />
@@ -69,39 +48,23 @@ modificado em: 12/01/2024
 						</div>
 						<div class="form-group px-5">
 							<label for="password">Password</label>
-							<Field
-								name="password"
-								type="password"
-								class="form-control"
-								v-tooltip="
-									'Informe uma senha difícil. Use letras maiúsculas, minúsculas e evite números sequenciais.'
-								"
-							/>
+							<Field name="password" type="password" class="form-control" v-tooltip="'Informe uma senha difícil. Use letras maiúsculas, minúsculas e evite números sequenciais.'
+								" />
 							<span class="error-feedback-span">
 								<ErrorMessage name="password" class="error-feedback" />
 							</span>
 						</div>
 
 						<div class="form-group px-5 py-5">
-							<button
-								class="btn btn-primary btn-block pxy-10"
-								:disabled="loading"
-							>
-								<span
-									v-show="loading"
-									class="spinner-border spinner-border-sm"
-								></span>
+							<button class="btn btn-primary btn-block pxy-10" :disabled="loading">
+								<span v-show="loading" class="spinner-border spinner-border-sm"></span>
 								Sign Up
 							</button>
 						</div>
 					</div>
 				</Form>
 
-				<div
-					v-if="message"
-					class="alert"
-					:class="successful ? 'alert-success' : 'alert-danger'"
-				>
+				<div v-if="message" class="alert" :class="successful ? 'alert-success' : 'alert-danger'">
 					{{ message }}
 				</div>
 			</div>
@@ -114,17 +77,7 @@ import UserService from '../services/user.service'
 import { Form, Field, ErrorMessage, defineRule } from 'vee-validate'
 import * as yup from 'yup'
 
-defineRule('name', (value) => {
-	if (!value || !value.length) {
-		return true
-	}
-
-	if (!/^[a-z]+(-[a-z]+)*$/.test(value)) {
-		return 'This field must be a valid name'
-	}
-
-	return true
-})
+const usernameRegex = /(^[a-zA-Z][a-zA-Z\s]{0,20}[a-zA-Z]$)/
 
 export default {
 	name: 'Register',
@@ -137,6 +90,7 @@ export default {
 		const schema = yup.object().shape({
 			username: yup
 				.string()
+				.matches(usernameRegex, 'Username inválido.')
 				.required('Necessário fornecer um Username!')
 				.min(3, 'Não deve ter ao menos de 6 caracteres!')
 				.max(20, 'Não deve ultrapassar 16 caracteres!'),
@@ -168,11 +122,6 @@ export default {
 		loggedIn() {
 			return this.$store.state.auth.status.loggedIn
 		},
-	},
-	mounted() {
-		if (this.loggedIn) {
-			this.$router.push('/profile')
-		}
 	},
 	methods: {
 		handleRegister(user) {

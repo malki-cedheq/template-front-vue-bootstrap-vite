@@ -22,7 +22,7 @@ export const auth = {
 					return Promise.reject(error)
 				})
 		},
-		logout({ commit }) {
+		async logout({ commit }) {
 			const token_data = JSON.parse(localStorage.getItem('token'))
 			AuthService.logout(token_data)
 				.then((response) => {

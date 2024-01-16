@@ -48,22 +48,32 @@ export default {
 		}
 	},
 	mounted() {
-		UserService.getPublicContent()
-			.then(
-				(response) => {
+		if (!this.loggedIn) {
+			this.$router.push('/login')
+		}
+		this.getUsers()
+	},
+	methods: {
+		getUsers() {
+			UserService.getPublicContent()
+				.then((response) => {
 					this.all_users = response.data
-				},
-				(error) => {
+					this.successful = true
+					this.message = 'Dados de usuários carregados com sucesso.'
+				})
+				.catch((error) => {
 					this.content =
 						(error.response &&
 							error.response.data &&
 							error.response.data.message) ||
 						error.message ||
 						error.toString()
-				},
-			)
-			.catch((error) => console.log(error))
-			.finally(() => (this.loading = false))
+					this.successful = false
+					this.message = 'Não foi possivel carregar os dados de usuários.'
+					console.log(error)
+				})
+				.finally(() => (this.loading = false))
+		},
 	},
 }
 </script>

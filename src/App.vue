@@ -32,33 +32,37 @@ modificado em: 12/01/2024
 						</router-link>
 					</li>
 					<li class="nav-item">
-						<router-link v-if="currentToken" to="/users" class="nav-link">
+						<router-link
+							v-if="hasSuperAdminPermission || hasAdminPermission"
+							to="/users/read"
+							class="nav-link"
+						>
 							<font-awesome-icon icon="users" /> Usuarios
 						</router-link>
 					</li>
-					<li v-if="showDashboardSuperAdmin" class="nav-item">
+					<li v-if="hasSuperAdminPermission" class="nav-item">
 						<router-link to="/super_admin" class="nav-link"
 							>Super Admin Board</router-link
 						>
 					</li>
-					<li v-if="showDashboardAdmin" class="nav-item">
+					<li v-if="hasAdminPermission" class="nav-item">
 						<router-link to="/admin" class="nav-link"
 							>Admin Board</router-link
 						>
 					</li>
-					<li v-if="showDashboardModerator" class="nav-item">
+					<li v-if="hasModeratorPermission" class="nav-item">
 						<router-link to="/moderator" class="nav-link"
 							>Moderator Board</router-link
 						>
 					</li>
-					<li v-if="showDashboardUser" class="nav-item">
+					<li v-if="hasUserPermission" class="nav-item">
 						<router-link to="/user" class="nav-link"
 							>User Board</router-link
 						>
 					</li>
 				</div>
 
-				<div v-if="!currentToken" class="navbar-nav ml-auto">
+				<div v-if="!currentDecodedToken" class="navbar-nav ml-auto">
 					<li class="nav-item">
 						<router-link to="/register" class="nav-link">
 							<font-awesome-icon icon="user-plus" /> Sign Up
@@ -71,14 +75,14 @@ modificado em: 12/01/2024
 					</li>
 				</div>
 
-				<div v-if="currentToken" class="navbar-nav ml-auto">
+				<div v-if="currentDecodedToken" class="navbar-nav ml-auto">
 					<li class="nav-item">
 						<router-link to="/profile" class="nav-link">
 							<font-awesome-icon icon="user" /> Profile
 						</router-link>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#" @click.prevent="handleLogOut">
+						<a class="nav-link" href="" @click.prevent="handleLogOut">
 							<font-awesome-icon icon="sign-out-alt" /> LogOut
 						</a>
 					</li>
@@ -130,46 +134,46 @@ export default {
 		loggedIn() {
 			return this.$store.state.auth.status.loggedIn
 		},
-		currentToken() {
+		currentDecodedToken() {
 			if (this.loggedIn) {
 				return this.$store.state.auth.decoded_token
 			}
 			return null
 		},
-		showDashboardAdmin() {
+		hasAdminPermission() {
 			try {
-				return this.currentToken &&
-					this.currentToken.additional_claims.role == 'ADMIN'
+				return this.currentDecodedToken &&
+					this.currentDecodedToken.additional_claims.role == 'ADMIN'
 					? true
 					: false
 			} catch (error) {
 				console.log(error)
 			}
 		},
-		showDashboardSuperAdmin() {
+		hasSuperAdminPermission() {
 			try {
-				return this.currentToken &&
-					this.currentToken.additional_claims.role == 'SUPERADMIN'
+				return this.currentDecodedToken &&
+					this.currentDecodedToken.additional_claims.role == 'SUPERADMIN'
 					? true
 					: false
 			} catch (error) {
 				console.log(error)
 			}
 		},
-		showDashboardModerator() {
+		hasModeratorPermission() {
 			try {
-				return this.currentToken &&
-					this.currentToken.additional_claims.role == 'MODERATOR'
+				return this.currentDecodedToken &&
+					this.currentDecodedToken.additional_claims.role == 'MODERATOR'
 					? true
 					: false
 			} catch (error) {
 				console.log(error)
 			}
 		},
-		showDashboardUser() {
+		hasUserPermission() {
 			try {
-				return this.currentToken &&
-					this.currentToken.additional_claims.role == 'USER'
+				return this.currentDecodedToken &&
+					this.currentDecodedToken.additional_claims.role == 'USER'
 					? true
 					: false
 			} catch (error) {
@@ -178,20 +182,9 @@ export default {
 		},
 	},
 	methods: {
-		handleLogOut() {
-			this.$store
-				.dispatch('auth/logout')
-				.then((response) => {
-					if (response.data.is_logged == 'false') {
-						this.$router.push('/login')
-					}
-				})
-				.catch(() => {
-					this.successful = false
-				})
-				.finally(() => {
-					this.loading = false
-				})
+		async handleLogOut() {
+			await this.$store.dispatch('auth/logout')
+			this.$router.push('/login')
 		},
 	},
 }

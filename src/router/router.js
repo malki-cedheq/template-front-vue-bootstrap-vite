@@ -8,7 +8,6 @@ criado em: 12/01/2024
 
 import { createWebHistory, createRouter } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import UsersView from '../views/UsersView.vue'
 import ProfileView from '../views/ProfileView.vue'
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
@@ -16,6 +15,8 @@ import BoardUserView from '../views/BoardUserView.vue'
 import BoardModeratorView from '../views/BoardModeratorView.vue'
 import BoardAdminView from '../views/BoardAdminView.vue'
 import BoardSuperAdminView from '../views/BoardSuperAdminView.vue'
+import UserView from '../views/crud_user/UserView.vue'
+import UserCreateView from '../views/crud_user/UserCreateView .vue'
 
 const router = createRouter({
 	history: createWebHistory(),
@@ -24,11 +25,6 @@ const router = createRouter({
 			path: '/',
 			name: 'home',
 			component: HomeView,
-		},
-		{
-			path: '/users',
-			name: 'users',
-			component: UsersView,
 		},
 		{
 			path: '/login',
@@ -64,6 +60,16 @@ const router = createRouter({
 			path: '/super_admin',
 			name: 'super_admin',
 			component: BoardSuperAdminView,
+		},
+		{
+			path: '/users/read',
+			name: 'user-view',
+			component: UserView,
+		},
+		{
+			path: '/user/create',
+			name: 'user-create',
+			component: UserCreateView,
 		},
 	],
 })
