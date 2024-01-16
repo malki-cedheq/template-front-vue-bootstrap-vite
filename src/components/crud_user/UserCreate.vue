@@ -74,20 +74,10 @@ modificado em: 12/01/2024
 
 <script>
 import UserService from '../../services/user.service'
-import { Form, Field, ErrorMessage, defineRule } from 'vee-validate'
+import { Form, Field, ErrorMessage } from 'vee-validate'
 import * as yup from 'yup'
 
-defineRule('name', (value) => {
-    if (!value || !value.length) {
-        return true
-    }
-
-    if (!/^[a-z]+(-[a-z]+)*$/.test(value)) {
-        return 'This field must be a valid name'
-    }
-
-    return true
-})
+const usernameRegex = /^[a-z]+(-[a-z]+)*$/
 
 export default {
     name: 'Register',
@@ -99,7 +89,7 @@ export default {
     data() {
         const schema = yup.object().shape({
             username: yup
-                .string()
+                .string().matches(usernameRegex, "Username inválido.")
                 .required('Necessário fornecer um Username!')
                 .min(3, 'Não deve ter ao menos de 6 caracteres!')
                 .max(20, 'Não deve ultrapassar 16 caracteres!'),
@@ -132,11 +122,6 @@ export default {
             return this.$store.state.auth.status.loggedIn
         },
     },
-    mounted() {
-        if (this.loggedIn) {
-            this.$router.push('/profile')
-        }
-    },
     methods: {
         handleRegister(user) {
             this.message = ''
@@ -148,7 +133,7 @@ export default {
                     this.message = 'Cadastrado com sucesso!'
                     this.successful = true
                     setTimeout(() => {
-                        this.$router.push('/login')
+                        this.$router.push('/users/read')
                     }, 1000)
                     return response.data
                 })
