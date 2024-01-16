@@ -86,6 +86,11 @@ export default {
             selectedUserId: null,
         }
     },
+    computed: {
+        loggedIn() {
+            return this.$store.state.auth.status.loggedIn
+        }
+    },
     methods: {
         getUsers() {
             UserService.getPublicContent()
@@ -139,6 +144,9 @@ export default {
         }
     },
     mounted() {
+        if (!this.loggedIn) {
+            this.$router.push('/login')
+        }
         this.getUsers()
     }
 }

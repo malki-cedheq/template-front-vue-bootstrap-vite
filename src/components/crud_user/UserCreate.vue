@@ -77,7 +77,7 @@ import UserService from '../../services/user.service'
 import { Form, Field, ErrorMessage } from 'vee-validate'
 import * as yup from 'yup'
 
-const usernameRegex = /^[a-z]+(-[a-z]+)*$/
+const usernameRegex = /(^[a-zA-Z][a-zA-Z\s]{0,20}[a-zA-Z]$)/
 
 export default {
     name: 'Register',
@@ -120,7 +120,7 @@ export default {
     computed: {
         loggedIn() {
             return this.$store.state.auth.status.loggedIn
-        },
+        }
     },
     methods: {
         handleRegister(user) {
@@ -150,6 +150,11 @@ export default {
                 })
         },
     },
+    mounted() {
+        if (!this.loggedIn) {
+            this.$router.push('/login')
+        }
+    }
 }
 </script>
 
