@@ -11,54 +11,37 @@ modificado em: 12/01/2024
 		<nav class="navbar navbar-expand-lg bg-light">
 			<div class="container-fluid">
 				<a class="navbar-brand" href="/">Navbar</a>
-				<button
-					class="navbar-toggler"
-					type="button"
-					data-bs-toggle="collapse"
-					data-bs-target="#navbarSupportedContent"
-					aria-controls="navbarSupportedContent"
-					aria-expanded="false"
-					aria-label="Toggle navigation"
-				>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+					data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+					aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
-				<div
-					class="navbar-nav me-auto mb-2 mb-lg-0 collapse navbar-collapse"
-					id="navbarSupportedContent"
-				>
+				<div class="navbar-nav me-auto mb-2 mb-lg-0 collapse navbar-collapse" id="navbarSupportedContent">
 					<li class="nav-item">
 						<router-link to="/" class="nav-link">
 							<font-awesome-icon icon="home" /> Início
 						</router-link>
 					</li>
 					<li class="nav-item">
-						<router-link v-if="currentToken" to="/users" class="nav-link">
+						<router-link v-if="hasSuperAdminPermission || hasAdminPermission" to="/users/read" class="nav-link">
 							<font-awesome-icon icon="users" /> Usuarios
 						</router-link>
 					</li>
-					<li v-if="showDashboardSuperAdmin" class="nav-item">
-						<router-link to="/super_admin" class="nav-link"
-							>Super Admin Board</router-link
-						>
+					<li v-if="hasSuperAdminPermission" class="nav-item">
+						<router-link to="/super_admin" class="nav-link">Super Admin Board</router-link>
 					</li>
-					<li v-if="showDashboardAdmin" class="nav-item">
-						<router-link to="/admin" class="nav-link"
-							>Admin Board</router-link
-						>
+					<li v-if="hasAdminPermission" class="nav-item">
+						<router-link to="/admin" class="nav-link">Admin Board</router-link>
 					</li>
-					<li v-if="showDashboardModerator" class="nav-item">
-						<router-link to="/moderator" class="nav-link"
-							>Moderator Board</router-link
-						>
+					<li v-if="hasModeratorPermission" class="nav-item">
+						<router-link to="/moderator" class="nav-link">Moderator Board</router-link>
 					</li>
-					<li v-if="showDashboardUser" class="nav-item">
-						<router-link to="/user" class="nav-link"
-							>User Board</router-link
-						>
+					<li v-if="hasUserPermission" class="nav-item">
+						<router-link to="/user" class="nav-link">User Board</router-link>
 					</li>
 				</div>
 
-				<div v-if="!currentToken" class="navbar-nav ml-auto">
+				<div v-if="!currentDecodedToken" class="navbar-nav ml-auto">
 					<li class="nav-item">
 						<router-link to="/register" class="nav-link">
 							<font-awesome-icon icon="user-plus" /> Sign Up
@@ -71,14 +54,14 @@ modificado em: 12/01/2024
 					</li>
 				</div>
 
-				<div v-if="currentToken" class="navbar-nav ml-auto">
+				<div v-if="currentDecodedToken" class="navbar-nav ml-auto">
 					<li class="nav-item">
 						<router-link to="/profile" class="nav-link">
 							<font-awesome-icon icon="user" /> Profile
 						</router-link>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#" @click.prevent="handleLogOut">
+						<a class="nav-link" href="" @click.prevent="handleLogOut">
 							<font-awesome-icon icon="sign-out-alt" /> LogOut
 						</a>
 					</li>
@@ -91,32 +74,22 @@ modificado em: 12/01/2024
 		</div>
 
 		<div class="container footer">
-			<footer
-				class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top"
-			>
+			<footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
 				<div class="col-md-4 d-flex align-items-center">
-					<span class="mb-3 mb-md-0 text-muted"
-						>All rights reserved © 2024
+					<span class="mb-3 mb-md-0 text-muted">All rights reserved © 2024
 						<a href="https://github.com/malki-cedheq">
 							malki-cedheq
-						</a></span
-					>
+						</a></span>
 				</div>
 				<ul class="nav col-md-3 justify-content-end list-unstyled d-flex">
 					<li class="ms-3">
-						<a class="text-muted" href="#"
-							><font-awesome-icon icon="camera-retro"
-						/></a>
+						<a class="text-muted" href="#"><font-awesome-icon icon="camera-retro" /></a>
 					</li>
 					<li class="ms-3">
-						<a class="text-muted" href="#"
-							><font-awesome-icon icon="envelope"
-						/></a>
+						<a class="text-muted" href="#"><font-awesome-icon icon="envelope" /></a>
 					</li>
 					<li class="ms-3">
-						<a class="text-muted" href="#"
-							><font-awesome-icon icon="comment"
-						/></a>
+						<a class="text-muted" href="#"><font-awesome-icon icon="comment" /></a>
 					</li>
 				</ul>
 			</footer>
@@ -125,51 +98,53 @@ modificado em: 12/01/2024
 </template>
 
 <script>
+
+
 export default {
 	computed: {
 		loggedIn() {
 			return this.$store.state.auth.status.loggedIn
 		},
-		currentToken() {
+		currentDecodedToken() {
 			if (this.loggedIn) {
 				return this.$store.state.auth.decoded_token
 			}
 			return null
 		},
-		showDashboardAdmin() {
+		hasAdminPermission() {
 			try {
-				return this.currentToken &&
-					this.currentToken.additional_claims.role == 'ADMIN'
+				return this.currentDecodedToken &&
+					this.currentDecodedToken.additional_claims.role == 'ADMIN'
 					? true
 					: false
 			} catch (error) {
 				console.log(error)
 			}
 		},
-		showDashboardSuperAdmin() {
+		hasSuperAdminPermission() {
 			try {
-				return this.currentToken &&
-					this.currentToken.additional_claims.role == 'SUPERADMIN'
+				return this.currentDecodedToken &&
+					this.currentDecodedToken.additional_claims.role == 'SUPERADMIN'
 					? true
 					: false
 			} catch (error) {
 				console.log(error)
 			}
 		},
-		showDashboardModerator() {
+		hasModeratorPermission() {
 			try {
-				return this.currentToken &&
-					this.currentToken.additional_claims.role == 'MODERATOR'
+				return this.currentDecodedToken &&
+					this.currentDecodedToken.additional_claims.role == 'MODERATOR'
 					? true
 					: false
 			} catch (error) {
 				console.log(error)
 			}
 		},
-		showDashboardUser() {
+		hasUserPermission() {
 			try {
-				return this.currentToken &&
-					this.currentToken.additional_claims.role == 'USER'
+				return this.currentDecodedToken &&
+					this.currentDecodedToken.additional_claims.role == 'USER'
 					? true
 					: false
 			} catch (error) {
@@ -178,21 +153,10 @@ export default {
 		},
 	},
 	methods: {
-		handleLogOut() {
-			this.$store
-				.dispatch('auth/logout')
-				.then((response) => {
-					if (response.data.is_logged == 'false') {
-						this.$router.push('/login')
-					}
-				})
-				.catch(() => {
-					this.successful = false
-				})
-				.finally(() => {
-					this.loading = false
-				})
-		},
+		async handleLogOut() {
+			await this.$store.dispatch('auth/logout')
+			this.$router.push('/login')
+		}
 	},
 }
 </script>
